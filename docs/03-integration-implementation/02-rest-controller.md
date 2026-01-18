@@ -1,4 +1,4 @@
-# 02. REST 컨트롤러 기본 분리 실습
+# REST 컨트롤러 기본 분리 실습
 
 이 문서는 **이미 실행 중인 Spring Boot API 프로젝트에**
 기존에 사용하던 `ApiController.java`와 분리된
