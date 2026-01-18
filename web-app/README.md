@@ -3,6 +3,15 @@
 - mysql
 - docker
 
+## 프로젝트 디렉터리
+
+```
+/projects/koreanit-pbl/web-app 
+  demo -- 스프링부트 api 서버
+  nginx -- nginx 설정파일
+  var/www -- nginx document root 폴더 ( html,css,js,php 등 )
+```
+
 # 소스코드 github에서 다운받기
 
 이 저장소는 **강의안(md) + 소스코드**가 함께 들어 있다.
@@ -15,16 +24,6 @@ git clone --filter=blob:none --no-checkout https://github.com/rstarkey1984/korea
 ```bash
 rm -rf .git
 ```
-
-## 프로젝트 디렉터리
-
-```
-web-app 
-  demo -- 스프링부트 api 서버
-  nginx -- nginx 설정파일
-  var/www -- nginx document root 폴더 ( html,css,js,php 등 )
-```
-
 
 ## 컨테이너로 전달할 환경변수 설정
 
