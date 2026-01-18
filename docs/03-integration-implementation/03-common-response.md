@@ -140,4 +140,4 @@ curl http://localhost:9092/api/health
 
 ## 다음 단계
 
-→ [**04. 전역 예외 처리 적용**](04-global-exception.md)
+→ [**전역 예외 처리 적용**](04-global-exception.md)

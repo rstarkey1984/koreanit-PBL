@@ -108,4 +108,4 @@ Gradle 정보가 정상 출력되면 다음 단계로 진행한다.
 
 ## 다음 단계
 
-→ [**02. REST 컨트롤러 기본 분리 실습**](02-rest-controller.md)
+→ [**REST 컨트롤러 기본 분리 실습**](02-rest-controller.md)

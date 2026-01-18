@@ -1,134 +1,93 @@
 # 강의 안내
 
-이 문서는 이 프로젝트의 **강의 진행을 위한 안내 문서**이다.
+이 문서는 **PBL 서버 프로그램 프로젝트의 전체 학습 흐름을 안내**하는 문서이다.  
+요구사항 확인부터 설계, 통합 구현, 테스트, 배포까지  
+서버 프로그램이 만들어지고 운영 환경에 배포되기까지의 과정을 단계별로 학습한다.
 
-본 강의는
-
-* 이미 존재하는 Spring Boot 프로젝트를 기준으로
-* 구조를 하나씩 개선해 나가는 과정을 통해
-* 서버 애플리케이션의 전체 흐름을 이해하는 것을 목표로 한다.
-
-실습은 모두 **기존 프로젝트 수정 방식**으로 진행되며,
-새 프로젝트를 처음부터 생성하지 않는다.
+모든 문서는 **순서대로 학습하는 것을 전제**로 구성되어 있으며,  
+강의 진행·실습·과제의 기준 문서로 사용된다.
 
 ---
 
-## 강의 대상 및 전제
+## 문서 구성 및 학습 흐름
 
-* Spring Boot 기본 실행 경험이 있는 학습자
-* Java 문법에 대한 기초 이해
-* Ubuntu(WSL) 환경에서의 개발 경험
+### 1. 요구사항 확인
 
-본 강의에서는 다음 환경을 기준으로 설명한다.
+- [01-current-system-analysis.md](./01-requirements/01-current-system-analysis.md)  
+  현행 시스템 분석
 
-* JDK 21
-* Gradle 기반 Spring Boot 프로젝트
-* 실행 방식: `./gradlew bootRun`
-* 서버 포트: 9092
+- [02-requirements.md](./01-requirements/02-requirements.md)  
+  요구사항 정의
 
----
-
-## 강의 전체 흐름
-
-강의는 다음 순서로 진행된다.
-
-```
-현행 코드 이해
-→ 구조 설계 이해
-→ 단계별 리팩토링 실습
-→ 통합 구현
-→ 배포 구조 이해
-```
-
-각 단계는 **앞 단계에서 작성한 코드와 문서를 그대로 이어서 사용**한다.
+- [03-analysis-model.md](./01-requirements/03-analysis-model.md)  
+  분석 모델 정리
 
 ---
 
-## 1. 현행 코드 분석
+### 2. 애플리케이션 설계
 
-강의의 시작은
-이미 존재하는 코드 구조를 이해하는 것이다.
+- [01-project-scaffold.md](./02-application-design/01-project-scaffold.md)  
+  프로젝트 전체 구조 설계
 
-* 하나의 컨트롤러에 몰려 있는 로직
-* 역할이 섞여 있는 코드 구조
+- [02-common-module-design.md](./02-application-design/02-common-module-design.md)  
+  공통 모듈 설계
 
-을 통해
-"왜 구조를 나눠야 하는가"를 먼저 체감한다.
-
----
-
-## 2. 구조 설계
-
-코드를 바로 고치지 않고,
-
-* 컨트롤러
-* 서비스
-* 레포지토리
-
-로 나누는 이유와 역할을
-문서를 통해 먼저 정리한다.
+- [03-integration-design.md](./02-application-design/03-integration-design.md)  
+  연계(통합) 구조 설계
 
 ---
 
-## 3. 단계별 실습
+### 3. 통합 구현
 
-실습은 항상 다음 원칙을 따른다.
+- [01-springboot-setup.md](./03-integration-implementation/01-springboot-setup.md)  
+  Spring Boot 프로젝트 초기 구성
 
-* 한 번에 하나의 구조만 변경한다
-* 변경 후 반드시 실행해서 확인한다
-* 기존 코드는 바로 제거하지 않는다
+- [02-rest-controller.md](./03-integration-implementation/02-rest-controller.md)  
+  REST Controller 구현
 
-실습 순서는 다음과 같다.
+- [03-common-response.md](./03-integration-implementation/03-common-response.md)  
+  공통 응답 구조 구현
 
-* 컨트롤러 분리
-* 공통 응답 포맷 적용
-* 전역 예외 처리
-* 서비스 레이어 분리
-* 레포지토리 레이어 분리
+- [04-global-exception.md](./03-integration-implementation/04-global-exception.md)  
+  전역 예외 처리
 
----
+- [05-service-layer.md](./03-integration-implementation/05-service-layer.md)  
+  Service 계층 구현
 
-## 4. 통합 구현
+- [06-repository-layer.md](./03-integration-implementation/06-repository-layer.md)  
+  Repository / SQL 계층 구현
 
-분리한 구조를 바탕으로
+- [07-database-connection.md](./03-integration-implementation/07-database-connection.md)  
+  데이터베이스 연결 구성
 
-* 데이터베이스 연동
-* 외부 시스템 연동(RSS)
+- [08-integration-rss.md](./03-integration-implementation/08-integration-rss.md)  
+  RSS 연계 구현
 
-을 통해
-실제 서비스 형태의 API를 완성한다.
+- [09-rss-parsing.md](./03-integration-implementation/09-rss-parsing.md)  
+  RSS 파싱 처리
 
----
-
-## 5. 실행 및 배포 구조 이해
-
-모든 구현이 끝난 뒤
-
-* Docker
-* docker-compose
-* Nginx
-
-구조를 통해
-"이 프로젝트가 어떻게 배포되는지"를 이해한다.
-
-> Docker 빌드 및 배포는 강의의 마지막 단계에서만 다룬다.
+- [10-integration-api.md](./03-integration-implementation/10-integration-api.md)  
+  외부 API 통합
 
 ---
 
-## 강의 진행 방식
+### 4. 테스트
 
-* 설명 → 실습 → 확인 순서로 진행한다
-* 코드 작성 자체보다 **구조 변화의 이유**를 중심으로 설명한다
-* 중간에 생기는 의문은 바로 실습으로 확인한다
+- [01-api-test.md](./04-testing/01-api-test.md)  
+  API 테스트
+
+- [02-error-scenario.md](./04-testing/02-error-scenario.md)  
+  오류 시나리오 검증
 
 ---
 
-## 마무리
+### 5. 배포
 
-이 강의의 목적은
+- [01-docker-compose-deploy.md](./05-deployment/01-docker-compose-deploy.md)  
+  Docker Compose 기반 배포
 
-* 특정 기술을 나열하는 것이 아니라
-* 서버 애플리케이션을 **어떻게 설계하고 확장해 나가는지**를 이해하는 것이다.
+- [02-nginx-reverse-proxy.md](./05-deployment/02-nginx-reverse-proxy.md)  
+  Nginx 리버스 프록시 구성
 
-강의가 끝나면
-하나의 정리된 Spring Boot 프로젝트를 완성하게 된다.
+- [03-deploy-checklist.md](./05-deployment/03-deploy-checklist.md)  
+  배포 점검 체크리스트

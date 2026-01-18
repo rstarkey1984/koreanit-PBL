@@ -145,4 +145,4 @@ curl http://localhost:9092/api/health
 
 ## 다음 단계
 
-→ [**07. 데이터베이스 연동 설정**](07-database-connection.md)
+→ [**데이터베이스 연동 설정**](07-database-connection.md)

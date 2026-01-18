@@ -122,4 +122,4 @@ OK
 
 ## 다음 단계
 
-→ [**03. 공통 응답 포맷 적용**](03-common-response.md)
+→ [**공통 응답 포맷 적용**](03-common-response.md)

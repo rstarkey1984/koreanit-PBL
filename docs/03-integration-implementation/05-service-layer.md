@@ -143,4 +143,4 @@ curl http://localhost:9092/api/health
 
 ## 다음 단계
 
-→ [**06. 레포지토리 레이어 분리**](06-repository-layer.md)
+→ [**레포지토리 레이어 분리**](06-repository-layer.md)

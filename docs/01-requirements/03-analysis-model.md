@@ -1,4 +1,4 @@
-# 03. 분석 모델 정의
+# 분석 모델 정의
 
 이 문서는 **02. 요구사항 정의**에서 정리한 기능 요구사항을
 시스템 관점에서 구조화한 **분석 모델**을 정의한다.
@@ -96,4 +96,4 @@
 
 ## 다음 단계
 
-→ [**01. 프로젝트 구조 설계**](/docs/02-application-design/01-project-scaffold.md)
+→ [**공통 모듈 및 역할 설계**](/docs/02-application-design/01-common-module-design.md)

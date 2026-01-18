@@ -119,4 +119,4 @@
 
 ## 다음 단계
 
-→ [**01. Spring Boot 개발환경 준비**](/docs/03-integration-implementation/01-springboot-setup.md)
+→ [**Spring Boot 개발환경 준비**](/docs/03-integration-implementation/01-springboot-setup.md)

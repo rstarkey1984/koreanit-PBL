@@ -132,4 +132,4 @@ curl http://localhost:9092/api/health
 
 ## 다음 단계
 
-→ [**05. 서비스 레이어 분리**](05-service-layer.md)
+→ [**서비스 레이어 분리**](05-service-layer.md)
