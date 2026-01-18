@@ -25,64 +25,72 @@ git clone --filter=blob:none --no-checkout https://github.com/rstarkey1984/korea
 rm -rf .git
 ```
 
-## 컨테이너로 전달할 환경변수 설정
-
-### `web-app/demo/.env` 파일 수정
-
 # PHP-FPM 이미지 빌드
-```
+```bash
 cd web-app
 ```
-```
+```bash
 docker build -t custom-php-fpm:8.3-alpine .
 ```
 
 ---
 
-# 스프링부트 API 이미지 테스트 및 빌드
+# 스프링부트 프로젝트 실행
 
-```
+```bash
 cd demo
 ```
 ### gradlew 실행권한 +
-```
+```bash
 chmod +x gradlew
 ```
 
-### Docker 이미지 빌드:
+### 실행:
+```bash
+./gradlew bootRun
+```
+
+### 확인:
+
+`http://localhost:9092/`
+
+---
+# Docker Compose 설정을 기반으로 컨테이너 관리
+
+### 모든 컨테이너 중지
+```bash
+docker stop $(docker ps -q)
+```
+
+### 스프링부트 API Docker 이미지 빌드:
+```bash
+cd demo
+```
 ```bash
 docker build -t web-app-api:1.0 .
 ```
 
 빌드 성공시:
-```
+```bash
 docker images | grep web-app-api
 ```
 
-### 단독 실행 테스트
-```
-docker run --rm -p 9092:9092 --env-file ../.env --add-host host.docker.internal:host-gateway web-app-api:1.0
-```
-
----
-# Docker Compose 설정을 기반으로 컨테이너 관리
-
 Docker Compose 실행:
-```
+```bash
 docker compose up -d
 ```
 
 Docker Compose 중지:
-```
+```bash
 docker compose down
 ```
 
 NGINX 로그확인:
-```
+```bash
 docker logs -f web-nginx
 ```
 
 PHP-FPM 로그확인:
-```
+```bash
 docker logs -f web-php
 ```

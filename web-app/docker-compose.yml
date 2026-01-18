@@ -1,5 +1,5 @@
 # Docker Compose 프로젝트 이름
-name: web-docker
+name: web-app
 
 services:
   # ----------------------------
@@ -41,7 +41,7 @@ services:
   # API 서버 (Spring Boot 등)
   # ----------------------------
   api:
-    image: web-docker-api:1.0 # API 서버 이미지
+    image: web-app-api:1.0 # API 서버 이미지
     container_name: web-api
     restart: unless-stopped
     expose:

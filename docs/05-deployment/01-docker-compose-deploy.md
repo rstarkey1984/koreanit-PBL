@@ -51,7 +51,7 @@ ss -lntp | grep 3308 || true
 프로젝트 루트에서 Dockerfile 기준으로 API 이미지를 빌드한다.
 
 ```bash
-docker build -t web-docker-api:1.0 .
+docker build -t web-app-api:1.0 .
 ```
 
 ---
