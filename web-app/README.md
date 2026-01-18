@@ -48,10 +48,6 @@ cd demo
 ```
 chmod +x gradlew
 ```
-### 단독 실행 테스트
-```
-docker run --rm -p 9092:9092 --env-file ../.env --add-host host.docker.internal:host-gateway web-app-api:1.0
-```
 
 ### Docker 이미지 빌드:
 ```bash
@@ -61,6 +57,11 @@ docker build -t web-app-api:1.0 .
 빌드 성공시:
 ```
 docker images | grep web-app-api
+```
+
+### 단독 실행 테스트
+```
+docker run --rm -p 9092:9092 --env-file ../.env --add-host host.docker.internal:host-gateway web-app-api:1.0
 ```
 
 ---
