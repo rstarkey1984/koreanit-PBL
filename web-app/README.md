@@ -1,106 +1,199 @@
-# 사전 준비 사항
-- git
-- mysql
-- docker
+# 개발 환경 및 프로젝트 실행 가이드
 
-## 프로젝트 디렉터리
+이 문서는
+**PBL 프로젝트를 실행하기 위한 사전 환경 준비부터
+Spring Boot API 서버와 Docker Compose 기반 실행까지의 전체 흐름**을 정리한다.
 
+---
+
+## 1. 사전 준비 사항
+
+다음 도구들이 사전에 설치되어 있어야 한다.
+
+* Git
+* MySQL
+* Docker / Docker Compose
+* WSL2 (Ubuntu)
+
+---
+
+## 2. 프로젝트 디렉터리 구조
+
+프로젝트는 다음과 같은 구조를 가진다.
+
+```text
+/projects/koreanit-pbl/web-app
+  demo        # Spring Boot API 서버
+  nginx       # Nginx 설정 파일
+  var/www     # Nginx document root (html, css, js, php 등)
 ```
-/projects/koreanit-pbl/web-app 
-  demo -- 스프링부트 api 서버
-  nginx -- nginx 설정파일
-  var/www -- nginx document root 폴더 ( html,css,js,php 등 )
-```
 
-## jdk17 설치
+* `demo`
+
+  * Java 기반 Spring Boot API 서버
+* `nginx`
+
+  * Reverse Proxy 및 정적 리소스 설정
+* `var/www`
+
+  * PHP / HTML / 정적 파일 영역
+
+---
+
+## 3. JDK 17 설치
+
+Spring Boot 서버 실행을 위해 JDK 17을 설치한다.
+
 ```bash
 sudo apt install openjdk-17-jdk
 ```
 
-# 소스코드 github에서 다운받기
-
-이 저장소는 **강의안(md) + 소스코드**가 함께 들어 있다.
-WSL 환경에서는 **소스코드(`web-app`)만** 받기 위해
-Git의 **sparse-checkout** 기능을 사용한다.
+설치 확인:
 
 ```bash
-git clone --filter=blob:none --no-checkout https://github.com/rstarkey1984/koreanit-PBL.git && cd koreanit-PBL && git sparse-checkout init --cone && git sparse-checkout set web-app && git checkout HEAD -- web-app
+java -version
 ```
+
+---
+
+## 4. 소스코드 다운로드 (Git sparse-checkout)
+
+이 저장소에는 **강의안(md) + 전체 소스코드**가 함께 포함되어 있다.
+WSL 환경에서는 **실습에 필요한 `web-app` 디렉터리만** 받는다.
+
+### 4-1. 저장소 클론 및 sparse-checkout 설정
+
+```bash
+git clone --filter=blob:none --no-checkout https://github.com/rstarkey1984/koreanit-PBL.git
+cd koreanit-PBL
+git sparse-checkout init --cone
+git sparse-checkout set web-app
+git checkout HEAD -- web-app
+```
+
+### 4-2. Git 메타데이터 제거 (선택)
+
+실습용 환경에서는 Git 관리가 필요 없으므로 `.git` 디렉터리를 제거한다.
+
 ```bash
 rm -rf .git
 ```
 
-# PHP-FPM 이미지 빌드
+---
+
+## 5. PHP-FPM Docker 이미지 빌드
+
+PHP 실행을 위한 커스텀 PHP-FPM 이미지를 빌드한다.
+
 ```bash
 docker build -f web-app/Dockerfile -t custom-php-fpm:8.3-alpine .
 ```
 
 ---
 
-# 스프링부트 프로젝트 실행
+## 6. Spring Boot 프로젝트 실행 (로컬)
+
+### 6-1. 프로젝트 디렉터리 이동
 
 ```bash
 cd web-app/demo
 ```
-### gradlew 실행권한 +
+
+### 6-2. gradlew 실행 권한 부여
+
 ```bash
 chmod +x gradlew
 ```
 
-### 실행:
+### 6-3. Spring Boot 서버 실행
+
 ```bash
 ./gradlew bootRun
 ```
 
-### 확인:
+### 6-4. 실행 확인
 
-`http://localhost:9092/`
+```text
+http://localhost:9092/
+```
 
 ---
-# Docker Compose 설정을 기반으로 컨테이너 관리
 
-### docker compose 로 실행된 컨테이너 중지
+## 7. Docker Compose 기반 컨테이너 관리
+
+Docker Compose를 통해
+Nginx / PHP-FPM / API 서버를 함께 관리한다.
+
+### 7-1. 실행 중인 컨테이너 중지
+
 ```bash
 docker compose down
 ```
 
-### 중단된 모든 컨테이너 삭제
+### 7-2. 중단된 컨테이너 정리 (선택)
+
 ```bash
 docker rm $(docker ps -aq -f status=exited)
 ```
 
-### 스프링부트 API Docker 이미지 빌드:
+---
+
+## 8. Spring Boot API Docker 이미지 빌드
+
 ```bash
 cd demo
 ```
+
 ```bash
 docker build -t web-app-api:1.0 .
 ```
 
-빌드 성공시:
+이미지 확인:
+
 ```bash
 docker images | grep web-app-api
 ```
 
-Docker Compose 실행:
+---
+
+## 9. Docker Compose 실행
+
 ```bash
 docker compose up -d
 ```
 
-확인:
-`http://www.localhost/`
+서비스 확인:
 
-Docker Compose 중지:
+```text
+http://www.localhost/
+```
+
+중지:
+
 ```bash
 docker compose down
 ```
 
-NGINX 로그확인:
+---
+
+## 10. 컨테이너 로그 확인
+
+### Nginx 로그
+
 ```bash
 docker logs -f web-nginx
 ```
 
-PHP-FPM 로그확인:
+### PHP-FPM 로그
+
 ```bash
 docker logs -f web-php
 ```
+
+---
+
+## 문서 사용 가이드
+
+* **1~6번**: 로컬 개발 환경에서 Spring Boot 서버 직접 실행
+* **7~9번**: Docker Compose 기반 통합 실행
+* **10번**: 장애 확인 및 디버깅 단계

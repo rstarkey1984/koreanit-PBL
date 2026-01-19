@@ -10,7 +10,7 @@
 
 ## 프로젝트 특징
 
-- 국가기술자격 PBL 흐름 기반 구성
+- 국가기술자격 및 NCS 실무 평가 흐름을 참고한 PBL 구성
 - Spring Boot 기반 서버 프로그램
 - SQL 중심 Repository 설계 (ORM 미사용)
 - 메인 서버 + 배치/워커 프로세스 분리
@@ -26,5 +26,7 @@
 ---
 
 ## 시작하기
+> 프로젝트 기본 구성은 아래 문서를 참고하세요.
+- 프로젝트 준비 바로가기: [`docs/README.md`](/web-app/README.md)
 > 강의는 docs/README.md의 순서를 따라 진행됩니다.
 - 강의안 문서 바로가기: [`docs/README.md`](/docs/README.md)
