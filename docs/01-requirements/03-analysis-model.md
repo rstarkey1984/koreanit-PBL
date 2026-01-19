@@ -171,4 +171,4 @@
 > 실제 애플리케이션 구조로
 > 어떻게 나눌 수 있을까?"
 
-→ [**01. 애플리케이션 설계**](/docs/02-application-design/01-application-architecture.md)
+→ [**애플리케이션 설계**](/docs/02-application-design/01-application-architecture.md)

@@ -69,4 +69,4 @@ http://localhost:9092/api/test/error
 
 ## 다음 단계
 
-→ [**배포 구조 이해**](/docs/05-deployment/01-docker-compose-deploy)
+→ [**애플리케이션 배포 환경구성**](/docs/05-deployment/01-deployment-environment.md)

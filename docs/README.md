@@ -84,10 +84,10 @@
 ### 5. 배포
 
 - [01-docker-compose-deploy.md](./05-deployment/01-docker-compose-deploy.md)  
-  Docker Compose 기반 배포
+  애플리케이션 배포 환경구성
 
 - [02-nginx-reverse-proxy.md](./05-deployment/02-nginx-reverse-proxy.md)  
-  Nginx 리버스 프록시 구성
+  소스 검증
 
 - [03-deploy-checklist.md](./05-deployment/03-deploy-checklist.md)  
-  배포 점검 체크리스트
+  빌드 및 배포
