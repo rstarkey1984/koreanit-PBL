@@ -80,7 +80,6 @@ src/main/java/com/example/demo/controller/HealthController.java
 ```java
 package com.example.demo.controller;
 
-import com.example.demo.common.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -123,7 +122,7 @@ Spring Boot 설정에 따라
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/health
+http://localhost:9092/api/health
 ```
 
 응답 결과가 정상적으로 반환되면
