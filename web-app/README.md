@@ -12,6 +12,11 @@
   var/www -- nginx document root 폴더 ( html,css,js,php 등 )
 ```
 
+## jdk17 설치
+```bash
+sudo apt install openjdk-17-jdk
+```
+
 # 소스코드 github에서 다운받기
 
 이 저장소는 **강의안(md) + 소스코드**가 함께 들어 있다.
@@ -54,9 +59,14 @@ chmod +x gradlew
 ---
 # Docker Compose 설정을 기반으로 컨테이너 관리
 
-### 모든 컨테이너 중지
+### docker compose 로 실행된 컨테이너 중지
 ```bash
-docker stop $(docker ps -q)
+docker compose down
+```
+
+### 중단된 모든 컨테이너 삭제
+```bash
+docker rm $(docker ps -aq -f status=exited)
 ```
 
 ### 스프링부트 API Docker 이미지 빌드:
@@ -76,6 +86,9 @@ Docker Compose 실행:
 ```bash
 docker compose up -d
 ```
+
+확인:
+`http://www.localhost/`
 
 Docker Compose 중지:
 ```bash
