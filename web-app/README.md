@@ -57,9 +57,9 @@ chmod +x gradlew
 ---
 # Docker Compose 설정을 기반으로 컨테이너 관리
 
-### 모든 컨테이너 중지
+### docker compose 로 실행된 컨테이너 중지
 ```bash
-docker stop $(docker ps -q)
+docker compose down
 ```
 
 ### 중단된 모든 컨테이너 삭제
