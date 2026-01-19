@@ -84,22 +84,33 @@ src/main/java/com/example/demo/common/ApiResponse.java
 ```java
 package com.example.demo.common;
 
+/**
+ * 공통 API 응답 포맷
+ */
 public class ApiResponse<T> {
 
+    /** 요청 성공 여부 */
     public boolean ok;
+
+    /** 성공 시 응답 데이터 */
     public T data;
+
+    /** 실패 시 메시지 */
     public String message;
 
+    /** 정적 메서드 사용을 강제하기 위한 private 생성자 */
     private ApiResponse(boolean ok, T data, String message) {
         this.ok = ok;
         this.data = data;
         this.message = message;
     }
 
+    /** 성공 응답 생성 */
     public static <T> ApiResponse<T> ok(T data) {
         return new ApiResponse<>(true, data, null);
     }
 
+    /** 실패 응답 생성 */
     public static <T> ApiResponse<T> fail(String message) {
         return new ApiResponse<>(false, null, message);
     }
@@ -127,9 +138,11 @@ import com.example.demo.common.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 서버 상태 확인용 컨트롤러 */
 @RestController
 public class HealthController {
 
+    /** 서버 정상 동작 여부 확인 */
     @GetMapping("/api/health")
     public ApiResponse<String> health() {
         return ApiResponse.ok("OK");
@@ -153,7 +166,7 @@ public class HealthController {
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/health
+http://localhost:9092/api/health
 ```
 
 정상 응답 예시는 다음과 같다.
