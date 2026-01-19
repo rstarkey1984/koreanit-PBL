@@ -22,7 +22,7 @@
 기존 실습용 API는 다음과 같다.
 
 * `/api/rss/raw`
-* `/api/news`
+* `/api/rss/news`
 
 이제 외부 시스템(RSS)을 직접 드러내지 않고,
 서비스 기준 API 하나로 통합한다.

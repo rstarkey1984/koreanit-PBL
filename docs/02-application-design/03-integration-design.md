@@ -144,7 +144,7 @@
 
 ---
 
-## 9. 이 단계의 핵심 정리
+## 이 단계의 핵심 정리
 
 타 시스템 연동 설계 단계에서는 다음을 확정한다.
 
@@ -167,4 +167,4 @@
 이 설계를 바탕으로
 **통합 구현(환경 구성 및 프로젝트 초기화)** 을 진행한다.
 
-→ [**Spring Boot 개발환경 준비**](/docs/03-integration-implementation/01-springboot-setup.md)
+→ [**Spring Boot 개발환경 확인 및 실행**](/docs/03-integration-implementation/01-springboot-setup.md)

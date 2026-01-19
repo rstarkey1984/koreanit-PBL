@@ -40,13 +40,13 @@
 ### 3. 통합 구현
 
 - [01-springboot-setup.md](./03-integration-implementation/01-springboot-setup.md)  
-  Spring Boot 프로젝트 초기 구성
+  Spring Boot 개발환경 확인 및 실행
 
 - [02-rest-controller.md](./03-integration-implementation/02-rest-controller.md)  
-  REST Controller 구현
+  REST 컨트롤러 기본 분리
 
 - [03-common-response.md](./03-integration-implementation/03-common-response.md)  
-  공통 응답 구조 구현
+  공통 응답 포맷 적용
 
 - [04-global-exception.md](./03-integration-implementation/04-global-exception.md)  
   전역 예외 처리
