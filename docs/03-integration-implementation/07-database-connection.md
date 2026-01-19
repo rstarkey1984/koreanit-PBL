@@ -46,8 +46,6 @@ public String getStatus() {
 기존 코드도 `DataSource` 기반으로 DB 접근을 하고 있으므로
 이번 실습도 **DataSource를 그대로 사용**한다.
 
-> `JdbcTemplate`로 바꾸지 않는다.
-
 ---
 
 ## 3) HealthRepository 구현
@@ -68,15 +66,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/** DB 상태 확인을 위한 Repository */
 @Repository
 public class HealthRepository {
 
+    /** DB 커넥션 풀(DataSource) */
     private final DataSource dataSource;
 
+    /** 생성자 주입 */
     public HealthRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
+    /** DB 연결 상태 확인 */
     public String getStatus() {
         String sql = "SELECT 1";
 
@@ -84,13 +86,14 @@ public class HealthRepository {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
+            // 쿼리 정상 실행 여부 확인
             if (rs.next() && rs.getInt(1) == 1) {
                 return "OK";
             }
             return "FAIL";
 
         } catch (Exception e) {
-            // 전역 예외 처리로 전달
+            // 예외는 전역 예외 처리로 전달
             throw new RuntimeException(e);
         }
     }
@@ -124,7 +127,7 @@ Repository에서 값을 가져오는 구조를 그대로 유지한다.
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/health
+http://localhost:9092/api/health
 ```
 
 정상 응답 예시:

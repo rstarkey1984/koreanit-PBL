@@ -48,7 +48,7 @@ curl http://localhost:9092/api/health
 ## 3) 뉴스 API 확인 (RSS 연동 + 파싱 + 통합 API)
 
 ```bash
-curl http://localhost:9092/api/news
+http://localhost:9092/api/news
 ```
 
 기대 결과(형태):

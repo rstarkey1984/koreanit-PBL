@@ -45,7 +45,7 @@ public ApiResponse<String> error() {
 요청:
 
 ```bash
-curl http://localhost:9092/api/test/error
+http://localhost:9092/api/test/error
 ```
 
 기대 결과(예시):
@@ -57,20 +57,6 @@ curl http://localhost:9092/api/test/error
   "message": "테스트 오류"
 }
 ```
-
----
-
-## 3) 뉴스 API 실패 케이스 확인 (선택)
-
-네트워크가 차단되었거나 RSS 응답이 비정상인 경우,
-뉴스 API도 실패 응답이 동일한 포맷으로 내려와야 한다.
-
-```bash
-curl http://localhost:9092/api/news
-```
-
-* 성공 시: `ok: true`
-* 실패 시: `ok: false` + `message`에 원인
 
 ---
 

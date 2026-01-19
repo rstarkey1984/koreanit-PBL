@@ -83,7 +83,7 @@ public class NewsController {
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/news
+http://localhost:9092/api/news
 ```
 
 응답 예시는 다음과 같다.

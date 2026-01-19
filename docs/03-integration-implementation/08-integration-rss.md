@@ -178,7 +178,7 @@ public class RssController {
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/rss/raw
+http://localhost:9092/api/rss/raw
 ```
 
 응답으로 RSS XML 문자열이 내려오면 정상이다.

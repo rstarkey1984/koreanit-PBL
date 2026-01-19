@@ -78,26 +78,37 @@ public class NewsItem {
 
 ---
 
-## 3) RssService 파싱 로직 추가
+## 3) RssService 수정
 
-기존 `RssService`에 파싱 로직을 추가한다.
-
+```text
+src/main/java/com/example/demo/service/RssService.java
+```
 ```java
 package com.example.demo.service;
 
-import com.example.demo.repository.RssRepository;
-import com.example.demo.service.dto.NewsItem;
-import org.springframework.stereotype.Service;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.*;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.example.demo.repository.RssRepository;
+import com.example.demo.service.dto.NewsItem;
+
 @Service
 public class RssService {
+
+    // URL 중복 제거 (필요하면 application.yml로 빼도 됨)
+    private static final String RSS_URL =
+            "https://news.google.com/rss/search?q=IT&hl=ko&gl=KR&ceid=KR:ko";
 
     private final RssRepository rssRepository;
 
@@ -105,35 +116,74 @@ public class RssService {
         this.rssRepository = rssRepository;
     }
 
-    public List<NewsItem> getNewsItems() {
-        String rssUrl = "https://news.google.com/rss/search?q=IT&hl=ko&gl=KR&ceid=KR:ko";
-        String xml = rssRepository.fetchRss(rssUrl);
+    public String getRawRss() {
+        return rssRepository.fetchRss(RSS_URL);
+    }
 
+    public List<NewsItem> getNewsItems() {
+        String xml = rssRepository.fetchRss(RSS_URL);
+        return parseNewsItems(xml);
+    }
+
+    // XML → NewsItem 리스트 변환 책임 분리
+    private List<NewsItem> parseNewsItems(String xml) {
         List<NewsItem> result = new ArrayList<>();
 
-        try {
-            Document doc = DocumentBuilderFactory
-                    .newInstance()
-                    .newDocumentBuilder()
-                    .parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+        if (xml == null || xml.isBlank()) {
+            return result;
+        }
 
+        try {
+            Document doc = parseXmlSafely(xml);
             NodeList items = doc.getElementsByTagName("item");
 
             for (int i = 0; i < items.getLength(); i++) {
                 Element item = (Element) items.item(i);
 
-                String title = item.getElementsByTagName("title").item(0).getTextContent();
-                String link = item.getElementsByTagName("link").item(0).getTextContent();
-                String pubDate = item.getElementsByTagName("pubDate").item(0).getTextContent();
+                String title = getText(item, "title");
+                String link = getText(item, "link");
+                String pubDate = getText(item, "pubDate");
+
+                // 필수값이 없으면 스킵(원하면 예외로 바꿔도 됨)
+                if (title == null || link == null) {
+                    continue;
+                }
 
                 result.add(new NewsItem(title, link, pubDate));
             }
 
+            return result;
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
 
-        return result;
+    // XXE 같은 외부 엔티티 공격 방지 설정
+    private Document parseXmlSafely(String xml) throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+
+        dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+
+        dbf.setXIncludeAware(false);
+        dbf.setExpandEntityReferences(false);
+
+        DocumentBuilder builder = dbf.newDocumentBuilder();
+
+        return builder.parse(new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    // 태그가 없을 수 있으니 안전하게 꺼내기
+    private String getText(Element parent, String tagName) {
+        NodeList list = parent.getElementsByTagName(tagName);
+        if (list == null || list.getLength() == 0 || list.item(0) == null) {
+            return null;
+        }
+        String text = list.item(0).getTextContent();
+        return (text == null) ? null : text.trim();
     }
 }
 ```
@@ -169,7 +219,7 @@ public ApiResponse<List<NewsItem>> news() {
 다음 요청으로 결과를 확인한다.
 
 ```bash
-curl http://localhost:9092/api/rss/news
+http://localhost:9092/api/rss/news
 ```
 
 응답 예시는 다음과 같다.

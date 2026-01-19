@@ -64,7 +64,7 @@ import org.springframework.stereotype.Service;
 public class HealthService {
 
     public String check() {
-        return "OK";
+        return "HealthService OK";
     }
 }
 ```
@@ -84,21 +84,39 @@ import com.example.demo.service.HealthService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/** 상태 확인 요청을 처리하는 컨트롤러 */
 @RestController
 public class HealthController {
 
+    /** 상태 확인 로직을 담당하는 Service */
     private final HealthService healthService;
 
+    /** 생성자 주입 */
     public HealthController(HealthService healthService) {
         this.healthService = healthService;
     }
 
+    /** 헬스 체크 API */
     @GetMapping("/api/health")
     public ApiResponse<String> health() {
         return ApiResponse.ok(healthService.check());
     }
 }
 ```
+
+## Spring 프레임워크 구조 (어노테이션 · 생성자 주입)
+
+* `@Controller`, `@Service`, `@Repository` 는 **서버 구성 요소 역할 표시**
+
+* Spring은 해당 클래스를 **서버 실행 시 자동으로 생성·관리**
+
+* **생성자 주입**은 서버 구성 요소 간 의존 관계를 연결하는 방식
+
+* 필요한 객체를 생성자 파라미터로 자동 전달받음
+
+> 서버 구성 요소는 역할에 따라 분리되고,
+> 생성자를 통해 흐름이 연결된다.
+
 
 ---
 
@@ -128,7 +146,7 @@ curl http://localhost:9092/api/health
 
 ---
 
-## 7. 이 실습의 의미
+## 이 실습의 의미
 
 이 단계에서 확인해야 할 핵심은 다음과 같다.
 

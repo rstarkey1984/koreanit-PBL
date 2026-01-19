@@ -87,15 +87,19 @@ package com.example.demo.service;
 import com.example.demo.repository.HealthRepository;
 import org.springframework.stereotype.Service;
 
+/** 헬스 체크 비즈니스 로직 담당 */
 @Service
 public class HealthService {
 
+    /** 상태 조회를 위한 Repository */
     private final HealthRepository healthRepository;
 
+    /** 생성자 주입 */
     public HealthService(HealthRepository healthRepository) {
         this.healthRepository = healthRepository;
     }
 
+    /** 시스템 상태 확인 */
     public String check() {
         return healthRepository.getStatus();
     }

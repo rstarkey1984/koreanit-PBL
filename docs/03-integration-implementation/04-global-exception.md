@@ -58,9 +58,11 @@ package com.example.demo.common;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/** 전역 예외를 공통 응답 형식으로 변환 */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /** 모든 예외를 잡아 실패 응답으로 반환 */
     @ExceptionHandler(Exception.class)
     public ApiResponse<Void> handleException(Exception e) {
         return ApiResponse.fail(e.getMessage());
@@ -82,9 +84,13 @@ public class GlobalExceptionHandler {
 ```java
 @GetMapping("/api/health")
 public ApiResponse<String> health() {
+
+    // 예외 발생 시 전역 예외 처리 동작 확인용
     if (true) {
         throw new RuntimeException("강제 오류 테스트");
     }
+
+    // 정상 응답 (실제로는 실행되지 않음)
     return ApiResponse.ok("OK");
 }
 ```
@@ -102,7 +108,7 @@ public ApiResponse<String> health() {
 오류 상황을 호출한다.
 
 ```bash
-curl http://localhost:9092/api/health
+http://localhost:9092/api/health
 ```
 
 응답 예시는 다음과 같다.
