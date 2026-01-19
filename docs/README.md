@@ -20,20 +20,20 @@
   요구사항 정의
 
 - [03-analysis-model.md](./01-requirements/03-analysis-model.md)  
-  분석 모델 정리
+  분석 모델 정의
 
 ---
 
 ### 2. 애플리케이션 설계
 
-- [01-project-scaffold.md](./02-application-design/01-project-scaffold.md)  
-  프로젝트 전체 구조 설계
+- [01-application-architecture.md](./02-application-design/01-application-architecture.md)  
+  애플리케이션 설계
 
 - [02-common-module-design.md](./02-application-design/02-common-module-design.md)  
-  공통 모듈 설계
+  공통 모듈 및 역할 설계
 
 - [03-integration-design.md](./02-application-design/03-integration-design.md)  
-  연계(통합) 구조 설계
+  타 시스템 연동 설계
 
 ---
 
