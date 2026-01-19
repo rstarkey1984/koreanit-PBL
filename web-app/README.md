@@ -62,6 +62,11 @@ chmod +x gradlew
 docker stop $(docker ps -q)
 ```
 
+### 중단된 모든 컨테이너 삭제
+```bash
+docker rm $(docker ps -aq -f status=exited)
+```
+
 ### 스프링부트 API Docker 이미지 빌드:
 ```bash
 cd demo
