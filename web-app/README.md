@@ -85,6 +85,9 @@ Docker Compose 실행:
 docker compose up -d
 ```
 
+확인:
+`http://www.localhost/`
+
 Docker Compose 중지:
 ```bash
 docker compose down
