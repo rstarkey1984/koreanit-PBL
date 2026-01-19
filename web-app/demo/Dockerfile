@@ -1,7 +1,7 @@
 # ----------------------------------------
 # 1단계: 빌드 스테이지
 # ----------------------------------------
-FROM eclipse-temurin:21-jdk AS builder
+FROM eclipse-temurin:17-jdk AS builder
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN ./gradlew clean bootJar -x test
 # ----------------------------------------
 # 2단계: 실행 스테이지
 # ----------------------------------------
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 

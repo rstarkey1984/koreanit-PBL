@@ -27,10 +27,7 @@ rm -rf .git
 
 # PHP-FPM 이미지 빌드
 ```bash
-cd web-app
-```
-```bash
-docker build -t custom-php-fpm:8.3-alpine .
+docker build -f web-app/Dockerfile -t custom-php-fpm:8.3-alpine .
 ```
 
 ---
@@ -38,7 +35,7 @@ docker build -t custom-php-fpm:8.3-alpine .
 # 스프링부트 프로젝트 실행
 
 ```bash
-cd demo
+cd web-app/demo
 ```
 ### gradlew 실행권한 +
 ```bash
