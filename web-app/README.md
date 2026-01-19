@@ -12,6 +12,11 @@
   var/www -- nginx document root 폴더 ( html,css,js,php 등 )
 ```
 
+## jdk17 설치
+```bash
+sudo apt install openjdk-17-jdk
+```
+
 # 소스코드 github에서 다운받기
 
 이 저장소는 **강의안(md) + 소스코드**가 함께 들어 있다.
