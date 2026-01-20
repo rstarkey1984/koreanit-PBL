@@ -13,7 +13,6 @@
 - 국가기술자격 및 NCS 실무 평가 흐름을 참고한 PBL 구성
 - Spring Boot 기반 서버 프로그램
 - SQL 중심 Repository 설계 (ORM 미사용)
-- 메인 서버 + 배치/워커 프로세스 분리
 - Docker 기반 실행 및 배포 환경
 
 ---
