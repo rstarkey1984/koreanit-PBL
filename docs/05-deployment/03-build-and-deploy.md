@@ -105,3 +105,5 @@ docker compose restart nginx
 * 로그에 치명적인 에러가 없다
 
 이로써 배포 실습 단계를 완료한다.
+
+

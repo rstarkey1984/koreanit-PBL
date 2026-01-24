@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>News List (Vue 3)</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Vue 3 CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-100">
+    <div id="app" class="mx-auto max-w-5xl px-4 py-10">
+      <header class="mb-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 class="text-2xl font-semibold tracking-tight">IT 뉴스 피드</h1>
+            <p class="mt-1 text-sm text-slate-300">
+              총 <span class="font-medium text-slate-100">{{ filteredItems.length }}</span>건
+              <span class="text-slate-500">/</span>
+              전체 <span class="font-medium text-slate-100">{{ items.length }}</span>건
+            </p>
+          </div>
+
+          <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+            <div class="relative w-full sm:w-80">
+              <input
+                v-model.trim="q"
+                type="text"
+                placeholder="검색: 제목/도메인"
+                class="w-full rounded-xl border border-slate-800 bg-slate-900/60 px-4 py-2.5 pr-10 text-sm text-slate-100 placeholder:text-slate-500 outline-none focus:border-slate-600"
+              />
+              <button
+                v-if="q"
+                @click="q=''"
+                class="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg px-2 py-1 text-xs text-slate-300 hover:bg-slate-800"
+                type="button"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div class="flex gap-2">
+              <select
+                v-model="sortKey"
+                class="rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-2.5 text-sm text-slate-100 outline-none focus:border-slate-600"
+              >
+                <option value="publishedAt">정렬: 날짜</option>
+                <option value="title">정렬: 제목</option>
+                <option value="domain">정렬: 도메인</option>
+              </select>
+
+              <button
+                @click="sortDir = sortDir === 'desc' ? 'asc' : 'desc'"
+                class="rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-2.5 text-sm text-slate-100 hover:border-slate-600"
+                type="button"
+              >
+                {{ sortDir === 'desc' ? '내림차순' : '오름차순' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="space-y-8">
+        <section v-if="filteredItems.length === 0" class="rounded-2xl border border-slate-800 bg-slate-900/40 p-10">
+          <p class="text-center text-sm text-slate-300">검색 결과가 없습니다.</p>
+        </section>
+
+        <section v-for="(group, day) in groupedByDay" :key="day" class="space-y-3">
+          <div class="sticky top-0 z-10 -mx-4 bg-slate-950/75 px-4 py-2 backdrop-blur">
+            <div class="flex items-center justify-between">
+              <h2 class="text-sm font-semibold text-slate-200">{{ day }}</h2>
+              <span class="text-xs text-slate-400">{{ group.length }}건</span>
+            </div>
+          </div>
+
+          <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <li
+              v-for="item in group"
+              :key="item.link"
+              class="group rounded-2xl border border-slate-800 bg-slate-900/40 p-4 transition hover:border-slate-600 hover:bg-slate-900/60"
+            >
+              <div class="flex items-start justify-between gap-3">
+                <a
+                  :href="item.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="line-clamp-2 text-sm font-semibold text-slate-100 underline-offset-4 group-hover:underline"
+                  :title="item.title"
+                >
+                  {{ item.title }}
+                </a>
+
+                <span
+                  class="shrink-0 rounded-full border border-slate-800 bg-slate-950/60 px-2 py-1 text-[11px] text-slate-300"
+                  :title="item.domain"
+                >
+                  {{ item.domain }}
+                </span>
+              </div>
+
+              <div class="mt-3 flex items-center justify-between text-xs text-slate-400">
+                <span>{{ formatKST(item.publishedAt) }}</span>
+                <a
+                  :href="item.link"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded-lg px-2 py-1 text-slate-300 hover:bg-slate-800"
+                >
+                  열기
+                </a>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer class="mt-10 border-t border-slate-800 pt-6 text-xs text-slate-500">
+        데이터:
+        <code class="rounded bg-slate-900/60 px-2 py-1 text-slate-300">{"data":[...], "ok": true}</code>
+      </footer>
+    </div>
+
+    <script type="module">
+      // Vue3 "방식" = createApp + setup(Composition API) 로 작성
+      const { createApp, ref, computed } = Vue;
+
+      createApp({
+        setup() {
+          const q = ref("");
+          const sortKey = ref("publishedAt"); // publishedAt | title | domain
+          const sortDir = ref("desc"); // desc | asc
+
+          // 서버에서 받은 데이터 그대로 (여기만 교체)
+          const raw = ref({
+            data: [
+              {
+                title: "노트북이 350만 원?‥선 넘은 IT기기 가격, 'AI플레이션' 본격화 - v.daum.net",
+                link: "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1rVUdwQ0c2UjRmTkNBTEJlOTBsRGVMdVVKMXE3ODRyVEJMQ2VWNFRaV0MzdVBCSG1oN2xUTFljbk5DT2ZTTnYzajlXODVBQm8?oc=5",
+                publishedAt: "Sat, 24 Jan 2026 11:28:11 GMT",
+              },
+              {
+                title: "\"아이 노트북 선물 어쩌죠?\"…메모리값 폭등에 IT 제품값도 덩달아 껑충 - 네이트",
+                link: "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5vS01MTnNlcmxSelpZeUpPYnBINDJya3pfeGVQdjNIUXJUc2ZEVDctVWR2YnR5cURJRkZXOEdOcEhhNENzM3FSOXNOQkNuamRWM3dJ?oc=5",
+                publishedAt: "Fri, 23 Jan 2026 22:02:00 GMT",
+              },
+              // ... 나머지도 그대로 붙여넣기
+            ],
+            message: null,
+            ok: true,
+          });
+
+          function extractDomain(url) {
+            try {
+              const u = new URL(url);
+              return u.hostname.replace(/^www\./, "");
+            } catch {
+              return "";
+            }
+          }
+
+          function extractDomainFromTitle(title) {
+            const idx = title.lastIndexOf(" - ");
+            if (idx === -1) return "";
+            const tail = title.slice(idx + 3).trim();
+            if (!tail) return "";
+            if (tail.includes(" ")) return "";
+            return tail;
+          }
+
+          function parseDate(value) {
+            const t = Date.parse(value);
+            return Number.isFinite(t) ? new Date(t) : null;
+          }
+
+          function formatKST(publishedAt) {
+            const d = parseDate(publishedAt);
+            if (!d) return publishedAt || "-";
+            return new Intl.DateTimeFormat("ko-KR", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+            }).format(d);
+          }
+
+          function dayLabelKST(publishedAt) {
+            const d = parseDate(publishedAt);
+            if (!d) return "날짜 알 수 없음";
+            const ymd = new Intl.DateTimeFormat("ko-KR", {
+              timeZone: "Asia/Seoul",
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              weekday: "short",
+            }).format(d);
+            return ymd;
+          }
+
+          const items = computed(() => {
+            const list = Array.isArray(raw.value?.data) ? raw.value.data : [];
+            return list
+              .map((x) => {
+                const link = String(x?.link ?? "");
+                const title = String(x?.title ?? "");
+                const publishedAt = String(x?.publishedAt ?? "");
+                const domain =
+                  extractDomain(link) ||
+                  extractDomainFromTitle(title) ||
+                  "-";
+                return { title, link, publishedAt, domain };
+              })
+              .filter((x) => x.title && x.link);
+          });
+
+          function compareByKey(a, b) {
+            const dir = sortDir.value === "desc" ? -1 : 1;
+
+            if (sortKey.value === "publishedAt") {
+              const da = parseDate(a.publishedAt)?.getTime() ?? 0;
+              const db = parseDate(b.publishedAt)?.getTime() ?? 0;
+              return (da - db) * dir;
+            }
+
+            if (sortKey.value === "title") {
+              return a.title.localeCompare(b.title, "ko") * dir;
+            }
+
+            if (sortKey.value === "domain") {
+              return a.domain.localeCompare(b.domain, "ko") * dir;
+            }
+
+            return 0;
+          }
+
+          const filteredItems = computed(() => {
+            const keyword = q.value.toLowerCase();
+            let list = items.value;
+
+            if (keyword) {
+              list = list.filter((x) => {
+                return (
+                  x.title.toLowerCase().includes(keyword) ||
+                  x.domain.toLowerCase().includes(keyword)
+                );
+              });
+            }
+
+            return [...list].sort(compareByKey);
+          });
+
+          const groupedByDay = computed(() => {
+            const map = new Map();
+            for (const item of filteredItems.value) {
+              const day = dayLabelKST(item.publishedAt);
+              if (!map.has(day)) map.set(day, []);
+              map.get(day).push(item);
+            }
+            // Vue 템플릿에서 v-for로 돌리기 쉽게 plain object로 변환
+            const obj = {};
+            for (const [k, v] of map.entries()) obj[k] = v;
+            return obj;
+          });
+
+          return {
+            q,
+            sortKey,
+            sortDir,
+            items,
+            filteredItems,
+            groupedByDay,
+            formatKST,
+          };
+        },
+      }).mount("#app");
+    </script>
+  </body>
+</html>

@@ -82,21 +82,24 @@ rm -rf .git
 ---
 
 ## 5. PHP-FPM Docker 이미지 빌드
+```bash
+cd web-app
+```
 
 PHP 실행을 위한 커스텀 PHP-FPM 이미지를 빌드한다.
 
 ```bash
-docker build -f web-app/Dockerfile -t custom-php-fpm:8.3-alpine .
+docker build -f Dockerfile -t custom-php-fpm:8.3-alpine .
 ```
 
 ---
 
 ## 6. Spring Boot 프로젝트 실행 (로컬)
 
-### 6-1. 프로젝트 디렉터리 이동
+### 6-1. 스프링부트 프로젝트 디렉터리 이동
 
 ```bash
-cd web-app/demo
+cd demo
 ```
 
 ### 6-2. gradlew 실행 권한 부여

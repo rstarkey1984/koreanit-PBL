@@ -115,6 +115,11 @@ http://localhost:9092/api/news
 이제 이 프로젝트는
 **실제 서비스 API 형태를 갖춘 상태**가 된다.
 
+
+## NEWS API 호출하여 페이지 보여주기
+
+[var/www/www.localhost/public/news.html](/web-app/var/www/www.localhost/public/news.html)
+
 ---
 
 ## 다음 단계
