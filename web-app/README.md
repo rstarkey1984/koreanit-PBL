@@ -144,10 +144,6 @@ docker rm $(docker ps -aq -f status=exited)
 ## 8. Spring Boot API Docker 이미지 빌드
 
 ```bash
-cd demo
-```
-
-```bash
 docker build -t web-app-api:1.0 .
 ```
 
