@@ -18,6 +18,10 @@
 ### 1-1. API 이미지 빌드
 
 ```bash
+cd web-app/demo
+```
+
+```bash
 docker build -t web-app-api:1.0 .
 ```
 
@@ -50,7 +54,7 @@ docker compose ps
 ### 3-1. API 로그
 
 ```bash
-docker compose logs -f api
+docker compose logs api
 ```
 
 확인 항목:
@@ -63,8 +67,9 @@ docker compose logs -f api
 ### 3-2. Nginx / Redis 로그
 
 ```bash
-docker compose logs -f nginx
-docker compose logs -f redis
+docker compose logs nginx
+
+docker compose logs redis
 ```
 
 ---

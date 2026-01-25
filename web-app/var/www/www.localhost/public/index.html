@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="ko">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -9,478 +8,254 @@
   <!-- Vue 3 (CDN) -->
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
   <style>
-    :root {
-      --bg: #0b0c10;
-      --panel: #111319;
-      --panel2: #0f1116;
-      --border: #232633;
-      --text: #e9ecf1;
-      --muted: #a4adbb;
-      --accent: #6aa9ff;
-      --danger: #ff6b6b;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-      --radius: 16px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 20% 0%, #111a2b 0%, var(--bg) 55%);
-      color: var(--text);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(1180px, 92vw);
-      margin: 0 auto;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      background: rgba(11, 12, 16, .72);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 99px;
-      background: var(--accent);
-      box-shadow: 0 0 0 6px rgba(106, 169, 255, .12);
-    }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 16px;
-      letter-spacing: .2px;
-    }
-
-    .right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      color: var(--muted);
-      background: rgba(255, 255, 255, .02);
-    }
-
-    main {
-      padding: 16px 0 28px;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 16px;
-    }
-
-    @media (max-width: 980px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .card {
-      background: linear-gradient(180deg, var(--panel) 0%, var(--panel2) 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
-
-    .card h2 {
-      margin: 0 0 10px;
-      font-size: 15px;
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 14px 0;
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .spacer {
-      flex: 1;
-    }
-
-    .btn {
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(106, 169, 255, .14);
-      color: var(--text);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .btn:hover {
-      border-color: rgba(106, 169, 255, .45);
-    }
-
-    .btn.ghost {
-      background: transparent;
-    }
-
-    .btn.danger {
-      background: rgba(255, 107, 107, .12);
-      border-color: rgba(255, 107, 107, .35);
-    }
-
-    .btn.danger:hover {
-      border-color: rgba(255, 107, 107, .6);
-    }
-
-    .form {
-      display: grid;
-      gap: 10px;
-    }
-
-    label {
-      display: grid;
-      gap: 6px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 10px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: #0b0d12;
-      color: var(--text);
-      outline: none;
-    }
-
-    textarea {
-      resize: vertical;
-    }
-
-    .cols {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    @media (max-width: 520px) {
-      .cols {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .box {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      background: rgba(255, 255, 255, .02);
-    }
-
-    .box h3 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      color: var(--muted);
-      font-weight: 600;
-    }
-
-    .postsLayout {
-      display: grid;
-      grid-template-columns: 360px 1fr;
-      gap: 14px;
-    }
-
-    @media (max-width: 980px) {
-      .postsLayout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .list {
-      list-style: none;
-      padding: 0;
-      margin: 10px 0 0;
-      display: grid;
-      gap: 10px;
-    }
-
-    .item {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px;
-      background: rgba(255, 255, 255, .02);
-    }
-
-    .item:hover {
-      border-color: rgba(106, 169, 255, .4);
-    }
-
-    .titleRow {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .link {
-      border: none;
-      background: none;
-      color: var(--accent);
-      cursor: pointer;
-      padding: 0;
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.25;
-    }
-
-    .metaRow {
-      margin-top: 7px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .panel {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 12px;
-      background: rgba(255, 255, 255, .02);
-    }
-
-    .kv {
-      display: grid;
-      gap: 6px;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-
-    .kv b {
-      color: #dfe7f5;
-    }
-
-    .small {
-      font-size: 12px;
-      color: var(--muted);
-      word-break: break-all;
-    }
-
-    .pager {
-      margin-top: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .pager input {
-      width: 72px;
-      text-align: center;
-    }
-
-    .toast {
-      position: fixed;
-      right: 16px;
-      bottom: 16px;
-      width: min(460px, 92vw);
-      background: rgba(17, 19, 25, .9);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-      box-shadow: var(--shadow);
-    }
-
-    .toast .t1 {
-      font-size: 13px;
-    }
-
-    .toast .t2 {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 4px;
-      white-space: pre-wrap;
-    }
-
-    .toast .x {
-      float: right;
-      border: none;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 0;
-      font-size: 14px;
-    }
+    /* 토스트의 pre-wrap 같은 “딱 필요한” 것만 최소 유지 */
+    .prewrap { white-space: pre-wrap; }
   </style>
 </head>
 
-<body>
+<body class="min-h-screen bg-[radial-gradient(1200px_800px_at_20%_0%,#111a2b_0%,#0b0c10_55%)] text-slate-100">
   <div id="app">
-    <header>
-      <div class="container top">
-        <div class="brand">
-          <span class="dot"></span>
-          <h1>Board</h1>
-          <span class="badge">
-            <span>API</span>
-            <span class="small">{{ apiBaseLabel }}</span>
-          </span>
-        </div>
+    <!-- Header -->
+    <header class="sticky top-0 z-10 border-b border-slate-800/70 bg-[#0b0c10]/70 backdrop-blur">
+      <div class="mx-auto w-[min(1180px,92vw)] py-3">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <span class="h-2.5 w-2.5 rounded-full bg-sky-400 shadow-[0_0_0_6px_rgba(106,169,255,.12)]"></span>
+            <h1 class="text-sm font-semibold tracking-wide">Board</h1>
 
-        <div class="right">
-          <span class="badge">
-            <span>세션</span>
-            <span v-if="me.logged_in">로그인됨 (user_id={{ me.user_id }})</span>
-            <span v-else>비로그인</span>
-          </span>
-          <button class="btn ghost" @click="refreshMe">상태 새로고침</button>
+            <span class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-white/5 px-3 py-1 text-xs text-slate-300">
+              <span class="text-slate-400">API</span>
+              <span class="break-all text-slate-300">{{ apiBaseLabel }}</span>
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-white/5 px-3 py-1 text-xs text-slate-300">
+              <span class="text-slate-400">세션</span>
+              <span v-if="me.logged_in">로그인됨 (user_id={{ me.user_id }})</span>
+              <span v-else>비로그인</span>
+            </span>
+
+            <button
+              class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm text-slate-200 hover:border-sky-400/50"
+              @click="refreshMe"
+            >
+              상태 새로고침
+            </button>
+          </div>
         </div>
       </div>
     </header>
 
-    <main class="container">
-      <div class="grid">
+    <main class="mx-auto w-[min(1180px,92vw)] py-4">
+      <div class="grid gap-4 lg:grid-cols-[420px_1fr]">
         <!-- LEFT -->
-        <section class="card">
-          <h2>인증</h2>
-          <div class="cols">
-            <div class="box">
-              <h3>회원가입</h3>
-              <div class="form">
-                <label>아이디
-                  <input v-model.trim="signupForm.username" placeholder="username" />
+        <section class="rounded-2xl border border-slate-800 bg-gradient-to-b from-[#111319] to-[#0f1116] p-4 shadow-[0_10px_30px_rgba(0,0,0,.35)]">
+          <h2 class="mb-2 text-sm font-semibold">인증</h2>
+
+          <div class="grid gap-3 sm:grid-cols-2">
+            <!-- Signup -->
+            <div class="rounded-2xl border border-slate-800 bg-white/5 p-3">
+              <h3 class="mb-2 text-xs font-semibold text-slate-300">회원가입</h3>
+              <div class="grid gap-2">
+                <label class="grid gap-1 text-xs text-slate-400">
+                  아이디
+                  <input
+                    v-model.trim="signupForm.username"
+                    placeholder="username"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <label>비밀번호
-                  <input v-model.trim="signupForm.password" type="password" placeholder="password" />
+
+                <label class="grid gap-1 text-xs text-slate-400">
+                  비밀번호
+                  <input
+                    v-model.trim="signupForm.password"
+                    type="password"
+                    placeholder="password"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <label>닉네임
-                  <input v-model.trim="signupForm.nickname" placeholder="nickname" />
+
+                <label class="grid gap-1 text-xs text-slate-400">
+                  닉네임
+                  <input
+                    v-model.trim="signupForm.nickname"
+                    placeholder="nickname"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <button class="btn" @click="signup">회원가입</button>
+
+                <button
+                  class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50"
+                  @click="signup"
+                >
+                  회원가입
+                </button>
               </div>
             </div>
 
-            <div class="box">
-              <h3>로그인</h3>
-              <div class="form">
-                <label>아이디
-                  <input v-model.trim="loginForm.username" placeholder="username" />
+            <!-- Login -->
+            <div class="rounded-2xl border border-slate-800 bg-white/5 p-3">
+              <h3 class="mb-2 text-xs font-semibold text-slate-300">로그인</h3>
+              <div class="grid gap-2">
+                <label class="grid gap-1 text-xs text-slate-400">
+                  아이디
+                  <input
+                    v-model.trim="loginForm.username"
+                    placeholder="username"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <label>비밀번호
-                  <input v-model.trim="loginForm.password" type="password" placeholder="password" />
+
+                <label class="grid gap-1 text-xs text-slate-400">
+                  비밀번호
+                  <input
+                    v-model.trim="loginForm.password"
+                    type="password"
+                    placeholder="password"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <div class="row">
-                  <button class="btn" @click="login">로그인</button>
-                  <button class="btn danger" @click="logout">로그아웃</button>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <button
+                    class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50"
+                    @click="login"
+                  >
+                    로그인
+                  </button>
+                  <button
+                    class="rounded-xl border border-rose-400/35 bg-rose-400/10 px-3 py-2 text-sm hover:border-rose-400/70"
+                    @click="logout"
+                  >
+                    로그아웃
+                  </button>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="divider"></div>
+          <div class="my-4 h-px bg-slate-800"></div>
 
-          <h2>내 프로필</h2>
-          <div class="row">
-            <button class="btn ghost" @click="loadMyProfile">조회</button>
-            <button class="btn" @click="saveMyProfile">저장(UPSERT)</button>
+          <h2 class="mb-2 text-sm font-semibold">내 프로필</h2>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+              @click="loadMyProfile"
+            >
+              조회
+            </button>
+            <button
+              class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50"
+              @click="saveMyProfile"
+            >
+              저장(UPSERT)
+            </button>
           </div>
 
-          <div class="form" style="margin-top:10px;">
-            <label>bio
-              <textarea rows="3" v-model="profileForm.bio" placeholder="자기소개"></textarea>
+          <div class="mt-3 grid gap-2">
+            <label class="grid gap-1 text-xs text-slate-400">
+              bio
+              <textarea
+                rows="3"
+                v-model="profileForm.bio"
+                placeholder="자기소개"
+                class="w-full resize-y rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+              ></textarea>
             </label>
-            <label>phone
-              <input v-model.trim="profileForm.phone" placeholder="010-1234-5678" />
+
+            <label class="grid gap-1 text-xs text-slate-400">
+              phone
+              <input
+                v-model.trim="profileForm.phone"
+                placeholder="010-1234-5678"
+                class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+              />
             </label>
-            <label>birth_date (YYYY-MM-DD)
-              <input v-model.trim="profileForm.birth_date" placeholder="2000-01-02" />
+
+            <label class="grid gap-1 text-xs text-slate-400">
+              birth_date (YYYY-MM-DD)
+              <input
+                v-model.trim="profileForm.birth_date"
+                placeholder="2000-01-02"
+                class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+              />
             </label>
-            <label>profile_image_url
-              <input v-model.trim="profileForm.profile_image_url" placeholder="https://..." />
+
+            <label class="grid gap-1 text-xs text-slate-400">
+              profile_image_url
+              <input
+                v-model.trim="profileForm.profile_image_url"
+                placeholder="https://..."
+                class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+              />
             </label>
           </div>
 
-          <div class="divider"></div>
+          <div class="my-4 h-px bg-slate-800"></div>
 
-          <h2>최근 로그</h2>
-          <div class="panel">
-            <div class="small" style="white-space:pre-wrap;">{{ lastLog }}</div>
+          <h2 class="mb-2 text-sm font-semibold">최근 로그</h2>
+          <div class="rounded-2xl border border-slate-800 bg-white/5 p-3">
+            <div class="prewrap break-words text-xs text-slate-300">{{ lastLog }}</div>
           </div>
         </section>
 
         <!-- RIGHT -->
-        <section class="card">
-          <div class="row" style="justify-content:space-between;">
-            <h2 style="margin:0;">게시글</h2>
-            <div class="row">
-              <button class="btn ghost" @click="loadPosts(true)">목록 새로고침</button>
-              <button class="btn" @click="openNewPost">새 글</button>
+        <section class="rounded-2xl border border-slate-800 bg-gradient-to-b from-[#111319] to-[#0f1116] p-4 shadow-[0_10px_30px_rgba(0,0,0,.35)]">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-sm font-semibold">게시글</h2>
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                @click="loadPosts(true)"
+              >
+                목록 새로고침
+              </button>
+              <button
+                class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50"
+                @click="openNewPost"
+              >
+                새 글
+              </button>
             </div>
           </div>
 
-          <div class="row" style="margin-top:10px;">
-            <select v-model="postsQuery.type" style="width:140px;">
+          <div class="mt-3 flex flex-wrap items-center gap-2">
+            <select
+              v-model="postsQuery.type"
+              class="w-[140px] rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400/60"
+            >
               <option value="both">제목+내용</option>
               <option value="title">제목</option>
               <option value="content">내용</option>
             </select>
-            <input v-model.trim="postsQuery.keyword" placeholder="검색어" />
-            <button class="btn ghost" @click="search">검색</button>
 
-            <div class="spacer"></div>
+            <input
+              v-model.trim="postsQuery.keyword"
+              placeholder="검색어"
+              class="min-w-[220px] flex-1 rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+            />
 
-            <label class="muted" style="display:flex; gap:8px; align-items:center;">
+            <button
+              class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+              @click="search"
+            >
+              검색
+            </button>
+
+            <div class="flex-1"></div>
+
+            <label class="flex items-center gap-2 text-xs text-slate-400">
               pageSize
-              <select v-model.number="postsQuery.pageSize" style="width:110px;">
+              <select
+                v-model.number="postsQuery.pageSize"
+                class="w-[110px] rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm text-slate-100 outline-none focus:border-sky-400/60"
+              >
                 <option :value="5">5</option>
                 <option :value="20">20</option>
                 <option :value="30">30</option>
@@ -489,100 +264,211 @@
             </label>
           </div>
 
-          <div class="postsLayout" style="margin-top:12px;">
+          <div class="mt-3 grid gap-4 lg:grid-cols-[360px_1fr]">
             <!-- list -->
             <div>
-              <div class="muted">total={{ posts.total }}, items={{ posts.items.length }}</div>
+              <div class="text-xs text-slate-400">total={{ posts.total }}, items={{ posts.items.length }}</div>
 
-              <ul class="list">
-                <li class="item" v-for="p in posts.items" :key="p.id">
-                  <div class="titleRow">
-                    <button class="link" @click="openPost(p.id)">
+              <ul class="mt-2 grid gap-2">
+                <li
+                  class="rounded-2xl border border-slate-800 bg-white/5 p-3 hover:border-sky-400/40"
+                  v-for="p in posts.items"
+                  :key="p.id"
+                >
+                  <div class="flex items-start justify-between gap-2">
+                    <button
+                      class="text-left text-sm font-medium leading-snug text-sky-300 hover:text-sky-200"
+                      @click="openPost(p.id)"
+                    >
                       #{{ p.id }} {{ p.title }}
                     </button>
-                    <span class="badge">v:{{ p.view_count }} c:{{ p.comments_cnt }}</span>
+
+                    <span class="inline-flex items-center gap-2 rounded-full border border-slate-800 bg-white/5 px-2.5 py-1 text-xs text-slate-300">
+                      v:{{ p.view_count }} c:{{ p.comments_cnt }}
+                    </span>
                   </div>
-                  <div class="metaRow">
+
+                  <div class="mt-2 flex flex-wrap gap-3 text-xs text-slate-400">
                     <span>user_id={{ p.user_id }}</span>
-                    <span class="small">{{ p.created_at }}</span>
+                    <span class="break-all">{{ p.created_at }}</span>
                   </div>
                 </li>
               </ul>
 
-              <div class="pager">
-                <button class="btn ghost" @click="prevPage">이전</button>
-                <div class="row">
-                  <span class="muted">page</span>
-                  <input type="number" min="1" v-model.number="postsQuery.page" @change="loadPosts(false)" />
-                  <span class="muted">/ {{ totalPages }}</span>
+              <div class="mt-3 flex items-center justify-between gap-2">
+                <button
+                  class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                  @click="prevPage"
+                >
+                  이전
+                </button>
+
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-400">page</span>
+                  <input
+                    type="number"
+                    min="1"
+                    v-model.number="postsQuery.page"
+                    @change="loadPosts(false)"
+                    class="w-[84px] rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-center text-sm outline-none focus:border-sky-400/60"
+                  />
+                  <span class="text-xs text-slate-400">/ {{ totalPages }}</span>
                 </div>
-                <button class="btn ghost" @click="nextPage">다음</button>
+
+                <button
+                  class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                  @click="nextPage"
+                >
+                  다음
+                </button>
               </div>
             </div>
 
             <!-- detail -->
-            <div class="panel">
-              <h2 style="margin:0;">상세</h2>
+            <div class="rounded-2xl border border-slate-800 bg-white/5 p-3">
+              <h2 class="text-sm font-semibold">상세</h2>
 
-              <div v-if="!selectedPost" class="muted" style="margin-top:10px;">
+              <div v-if="!selectedPost" class="mt-2 text-sm text-slate-400">
                 왼쪽에서 게시글을 선택하세요.
               </div>
 
-              <div v-else class="kv">
-                <div><b>id</b>: {{ selectedPost.id }}</div>
-                <div><b>user_id</b>: {{ selectedPost.user_id }}</div>
-                <div><b>title</b>: {{ selectedPost.title }}</div>
-                <div><b>content</b>: <div class="small">{{ selectedPost.content }}</div>
+              <div v-else class="mt-2 grid gap-2 text-sm">
+                <div><span class="font-semibold text-slate-200">id</span>: {{ selectedPost.id }}</div>
+                <div><span class="font-semibold text-slate-200">user_id</span>: {{ selectedPost.user_id }}</div>
+                <div><span class="font-semibold text-slate-200">title</span>: {{ selectedPost.title }}</div>
+                <div>
+                  <span class="font-semibold text-slate-200">content</span>:
+                  <div class="mt-1 break-words text-xs text-slate-300">{{ selectedPost.content }}</div>
                 </div>
-                <div><b>view_count</b>: {{ selectedPost.view_count }}</div>
-                <div><b>comments_cnt</b>: {{ selectedPost.comments_cnt }}</div>
-                <div><b>created_at</b>: <span class="small">{{ selectedPost.created_at }}</span></div>
-                <div><b>viewer_key</b>: <span class="small">{{ selectedPost.viewer_key }}</span></div>
+                <div><span class="font-semibold text-slate-200">view_count</span>: {{ selectedPost.view_count }}</div>
+                <div><span class="font-semibold text-slate-200">comments_cnt</span>: {{ selectedPost.comments_cnt }}</div>
+                <div><span class="font-semibold text-slate-200">created_at</span>: <span class="break-all text-xs text-slate-300">{{ selectedPost.created_at }}</span></div>
+                <div><span class="font-semibold text-slate-200">viewer_key</span>: <span class="break-all text-xs text-slate-300">{{ selectedPost.viewer_key }}</span></div>
               </div>
 
-              <div class="divider"></div>
+              <div class="my-4 h-px bg-slate-800"></div>
 
-              <h2 style="margin:0;">글 작성/수정</h2>
-              <div class="form" style="margin-top:10px;">
-                <label>title (최대 45)
-                  <input maxlength="45" v-model.trim="postForm.title" placeholder="제목" />
+              <h2 class="text-sm font-semibold">글 작성/수정</h2>
+
+              <div class="mt-2 grid gap-2">
+                <label class="grid gap-1 text-xs text-slate-400">
+                  title (최대 45)
+                  <input
+                    maxlength="45"
+                    v-model.trim="postForm.title"
+                    placeholder="제목"
+                    class="w-full rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  />
                 </label>
-                <label>content
-                  <textarea rows="5" v-model="postForm.content" placeholder="내용"></textarea>
+
+                <label class="grid gap-1 text-xs text-slate-400">
+                  content
+                  <textarea
+                    rows="5"
+                    v-model="postForm.content"
+                    placeholder="내용"
+                    class="w-full resize-y rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  ></textarea>
                 </label>
-                <div class="row">
-                  <button class="btn" @click="savePost">저장</button>
-                  <button class="btn ghost" @click="cancelPostEdit">취소</button>
-                  <button class="btn danger" @click="deletePost" :disabled="!postForm.id">삭제</button>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <button
+                    class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50"
+                    @click="savePost"
+                  >
+                    저장
+                  </button>
+                  <button
+                    class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                    @click="cancelPostEdit"
+                  >
+                    취소
+                  </button>
+                  <button
+                    class="rounded-xl border border-rose-400/35 bg-rose-400/10 px-3 py-2 text-sm hover:border-rose-400/70 disabled:cursor-not-allowed disabled:opacity-50"
+                    @click="deletePost"
+                    :disabled="!postForm.id"
+                  >
+                    삭제
+                  </button>
                 </div>
-                <div class="muted" v-if="postForm.id">수정 모드: post_id={{ postForm.id }}</div>
+
+                <div v-if="postForm.id" class="text-xs text-slate-400">
+                  수정 모드: post_id={{ postForm.id }}
+                </div>
               </div>
 
-              <div class="divider"></div>
+              <div class="my-4 h-px bg-slate-800"></div>
 
-              <h2 style="margin:0;">댓글</h2>
-              <div class="form" style="margin-top:10px;">
-                <label>comment (최대 255)
-                  <textarea rows="3" v-model="commentForm.comment" placeholder="댓글"></textarea>
+              <h2 class="text-sm font-semibold">댓글</h2>
+
+              <div class="mt-2 grid gap-2">
+                <label class="grid gap-1 text-xs text-slate-400">
+                  comment (최대 255)
+                  <textarea
+                    rows="3"
+                    v-model="commentForm.comment"
+                    placeholder="댓글"
+                    class="w-full resize-y rounded-xl border border-slate-800 bg-[#0b0d12] px-3 py-2 text-sm outline-none focus:border-sky-400/60"
+                  ></textarea>
                 </label>
-                <div class="row">
-                  <button class="btn" @click="addComment" :disabled="!selectedPost">작성</button>
-                  <button class="btn ghost" @click="updateComment" :disabled="!commentForm.id">수정</button>
-                  <button class="btn ghost" @click="cancelCommentEdit">취소</button>
+
+                <div class="flex flex-wrap items-center gap-2">
+                  <button
+                    class="rounded-xl border border-slate-800 bg-sky-400/15 px-3 py-2 text-sm hover:border-sky-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+                    @click="addComment"
+                    :disabled="!selectedPost"
+                  >
+                    작성
+                  </button>
+
+                  <button
+                    class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50 disabled:cursor-not-allowed disabled:opacity-50"
+                    @click="updateComment"
+                    :disabled="!commentForm.id"
+                  >
+                    수정
+                  </button>
+
+                  <button
+                    class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                    @click="cancelCommentEdit"
+                  >
+                    취소
+                  </button>
                 </div>
-                <div class="muted" v-if="commentForm.id">수정 모드: comment_id={{ commentForm.id }}</div>
+
+                <div v-if="commentForm.id" class="text-xs text-slate-400">
+                  수정 모드: comment_id={{ commentForm.id }}
+                </div>
               </div>
 
-              <ul class="list" style="margin-top:12px;">
-                <li class="item" v-for="c in comments" :key="c.id">
-                  <div class="titleRow">
-                    <div class="muted">#{{ c.id }} (user_id={{ c.user_id }})</div>
-                    <div class="small">{{ c.created_at }}</div>
+              <ul class="mt-3 grid gap-2">
+                <li
+                  class="rounded-2xl border border-slate-800 bg-white/5 p-3"
+                  v-for="c in comments"
+                  :key="c.id"
+                >
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="text-xs text-slate-400">#{{ c.id }} (user_id={{ c.user_id }})</div>
+                    <div class="break-all text-xs text-slate-400">{{ c.created_at }}</div>
                   </div>
-                  <div class="small" style="margin-top:8px;">{{ c.comment }}</div>
-                  <div class="row" style="margin-top:10px;">
-                    <button class="btn ghost" @click="editComment(c)">수정</button>
-                    <button class="btn danger" @click="removeComment(c.id)">삭제</button>
+
+                  <div class="mt-2 break-words text-xs text-slate-300">{{ c.comment }}</div>
+
+                  <div class="mt-3 flex flex-wrap items-center gap-2">
+                    <button
+                      class="rounded-xl border border-slate-800 bg-transparent px-3 py-2 text-sm hover:border-sky-400/50"
+                      @click="editComment(c)"
+                    >
+                      수정
+                    </button>
+                    <button
+                      class="rounded-xl border border-rose-400/35 bg-rose-400/10 px-3 py-2 text-sm hover:border-rose-400/70"
+                      @click="removeComment(c.id)"
+                    >
+                      삭제
+                    </button>
                   </div>
                 </li>
               </ul>
@@ -591,10 +477,19 @@
         </section>
       </div>
 
-      <div class="toast" v-if="toast.show">
-        <button class="x" @click="toast.show=false">✕</button>
-        <div class="t1">{{ toast.title }}</div>
-        <div class="t2">{{ toast.body }}</div>
+      <!-- Toast -->
+      <div
+        v-if="toast.show"
+        class="fixed bottom-4 right-4 w-[min(460px,92vw)] rounded-2xl border border-slate-800 bg-[#111319]/90 p-3 shadow-[0_10px_30px_rgba(0,0,0,.35)]"
+      >
+        <button
+          class="float-right cursor-pointer border-0 bg-transparent text-slate-400"
+          @click="toast.show=false"
+        >
+          ✕
+        </button>
+        <div class="text-sm">{{ toast.title }}</div>
+        <div class="mt-1 prewrap text-xs text-slate-400">{{ toast.body }}</div>
       </div>
     </main>
   </div>
@@ -643,7 +538,6 @@
       methods: {
         notify(title, body) {
           this.toast = { show: true, title, body: body ?? "" };
-          // 너무 거슬리면 자동 닫기 제거해도 됨
           setTimeout(() => { this.toast.show = false; }, 2500);
         },
 
@@ -836,7 +730,6 @@
           }
 
           if (!this.postForm.id) {
-            // create
             const r = await this.request("/posts", { method: "POST", body: { title, content } });
             if (r?.ok) {
               this.log("create post ok", r.data);
@@ -848,7 +741,6 @@
               this.notify("글 작성 실패", r?.message || "");
             }
           } else {
-            // update
             const id = this.postForm.id;
             const r = await this.request(`/posts/${id}`, { method: "PUT", body: { title, content } });
             if (r?.ok) {
@@ -883,7 +775,6 @@
 
         cancelPostEdit() {
           if (this.selectedPost?.id) {
-            // 선택된 글이 있으면 편집폼을 상세값으로 되돌림
             this.postForm.id = this.selectedPost.id;
             this.postForm.title = this.selectedPost.title || "";
             this.postForm.content = this.selectedPost.content || "";
@@ -936,7 +827,7 @@
           if (r?.ok) {
             this.notify("댓글 작성 완료", `comment_id=${r.data.comment_id}`);
             this.commentForm = { id: null, comment: "" };
-            await this.openPost(this.selectedPost.id); // 상세/카운트 갱신
+            await this.openPost(this.selectedPost.id);
           } else {
             this.notify("댓글 작성 실패", r?.message || "");
           }
@@ -976,7 +867,6 @@
           if (r?.ok) {
             this.notify("댓글 삭제", "");
             this.commentForm = { id: null, comment: "" };
-            // 댓글 수 반영 위해 상세 재조회
             if (this.selectedPost?.id) await this.openPost(this.selectedPost.id);
           } else {
             this.notify("댓글 삭제 실패", r?.message || "");
@@ -989,12 +879,10 @@
       },
 
       async mounted() {
-        // 초기 로드
         await this.refreshMe();
         await this.loadPosts(true);
       }
     }).mount("#app");
   </script>
 </body>
-
 </html>
