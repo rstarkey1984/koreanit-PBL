@@ -10,7 +10,7 @@ services:
     container_name: web-nginx # 컨테이너 이름 고정
     restart: unless-stopped # 수동 중지 전까지 자동 재시작
     ports:
-      - "81:80" # 호스트 80 → 컨테이너 80 포트 매핑
+      - "80:80" # 호스트 80 → 컨테이너 80 포트 매핑
     volumes:
       - ./var/www:/var/www:ro # 웹 루트(정적/프론트 리소스), 읽기 전용
       - ./nginx:/etc/nginx/conf.d:ro # Nginx 가상호스트 설정, 읽기 전용
