@@ -11,7 +11,6 @@ Spring Boot API 서버와 Docker Compose 기반 실행까지의 전체 흐름**�
 다음 도구들이 사전에 설치되어 있어야 한다.
 
 * Git
-* MySQL
 * Docker / Docker Compose
 * WSL2 (Ubuntu)
 
