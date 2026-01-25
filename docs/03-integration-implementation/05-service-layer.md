@@ -104,7 +104,7 @@ public class HealthController {
 }
 ```
 
-## Spring 프레임워크 구조 (어노테이션 · 생성자 주입)
+## Spring 프레임워크 구조 (애너테이션 · 생성자 주입)
 
 * `@Controller`, `@Service`, `@Repository` 는 **서버 구성 요소 역할 표시**
 
