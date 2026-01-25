@@ -82,4 +82,4 @@ Nginx는 `/api/*` 요청을 API 컨테이너로 전달한다.
 
 ## 다음 단계
 
-→ [**빌드 및 배포**](/docs/05-deployment/03-build-and-deploy.md)
+→ [**빌드 및 배포**](03-build-and-deploy.md)

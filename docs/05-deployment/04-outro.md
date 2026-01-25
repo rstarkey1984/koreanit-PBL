@@ -58,7 +58,7 @@ scp ubuntu24:~/projects/koreanit-PBL/web-app.zip .
 
 ---
 
-## 5. 주의 사항
+## 주의 사항
 
 * 압축 파일 안에 **다시 zip 파일이 포함되지 않도록 주의**
 * 실행에 필요한 설정 파일은 포함

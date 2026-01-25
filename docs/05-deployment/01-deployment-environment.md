@@ -124,5 +124,5 @@
 
 ## 다음 단계
 
-→ [**소스 검증**](/docs/05-deployment/02-source-verification.md)
+→ [**소스 검증**](02-source-verification.md)
 
