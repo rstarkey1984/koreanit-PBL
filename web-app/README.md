@@ -83,7 +83,7 @@ rm -rf .git
 
 ## 5. PHP-FPM Docker 이미지 빌드
 ```bash
-cd web-app
+cd web-app/php
 ```
 
 PHP 실행을 위한 커스텀 PHP-FPM 이미지를 빌드한다.
@@ -94,30 +94,22 @@ docker build -f Dockerfile -t custom-php-fpm:8.3-alpine .
 
 ---
 
-## 6. Spring Boot 프로젝트 실행 (로컬)
+## 6. Spring Boot 프로젝트 이미지 빌드
 
-### 6-1. 스프링부트 프로젝트 디렉터리 이동
-
+프로젝트 경로로 이동:
 ```bash
-cd demo
+cd web-app/demo
 ```
 
-### 6-2. gradlew 실행 권한 부여
-
+이미지 빌드:
 ```bash
-chmod +x gradlew
+docker build -t web-app-api:1.0 .
 ```
 
-### 6-3. Spring Boot 서버 실행
+이미지 확인:
 
 ```bash
-./gradlew bootRun
-```
-
-### 6-4. 실행 확인
-
-```text
-http://localhost:9092/
+docker images | grep web-app-api
 ```
 
 ---
@@ -141,21 +133,7 @@ docker rm $(docker ps -aq -f status=exited)
 
 ---
 
-## 8. Spring Boot API Docker 이미지 빌드
-
-```bash
-docker build -t web-app-api:1.0 .
-```
-
-이미지 확인:
-
-```bash
-docker images | grep web-app-api
-```
-
----
-
-## 9. Docker Compose 실행
+## 8. Docker Compose 실행
 
 ```bash
 docker compose up -d
@@ -180,19 +158,11 @@ docker compose down
 ### Nginx 로그
 
 ```bash
-docker logs -f web-nginx
+docker compose logs nginx
 ```
 
-### PHP-FPM 로그
+### 스프링부트 api 로그
 
 ```bash
-docker logs -f web-php
+docker compose logs api
 ```
-
----
-
-## 문서 사용 가이드
-
-* **1~6번**: 로컬 개발 환경에서 Spring Boot 서버 직접 실행
-* **7~9번**: Docker Compose 기반 통합 실행
-* **10번**: 장애 확인 및 디버깅 단계

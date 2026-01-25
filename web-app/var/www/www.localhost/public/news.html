@@ -60,17 +60,49 @@
               >
                 {{ sortDir === 'desc' ? '내림차순' : '오름차순' }}
               </button>
+
+              <button
+                @click="fetchNews"
+                class="rounded-xl border border-slate-800 bg-slate-900/60 px-3 py-2.5 text-sm text-slate-100 hover:border-slate-600"
+                type="button"
+              >
+                새로고침
+              </button>
             </div>
           </div>
         </div>
       </header>
 
       <main class="space-y-8">
-        <section v-if="filteredItems.length === 0" class="rounded-2xl border border-slate-800 bg-slate-900/40 p-10">
+        <!-- 로딩 -->
+        <section
+          v-if="loading"
+          class="rounded-2xl border border-slate-800 bg-slate-900/40 p-10"
+        >
+          <p class="text-center text-sm text-slate-300">불러오는 중...</p>
+        </section>
+
+        <!-- 에러 -->
+        <section
+          v-else-if="error"
+          class="rounded-2xl border border-rose-900/60 bg-rose-950/30 p-10"
+        >
+          <p class="text-center text-sm text-rose-200">{{ error }}</p>
+          <p class="mt-2 text-center text-xs text-rose-300">
+            (CORS 또는 https 페이지에서 http 호출 문제일 수 있음)
+          </p>
+        </section>
+
+        <!-- 결과 없음 -->
+        <section
+          v-else-if="filteredItems.length === 0"
+          class="rounded-2xl border border-slate-800 bg-slate-900/40 p-10"
+        >
           <p class="text-center text-sm text-slate-300">검색 결과가 없습니다.</p>
         </section>
 
-        <section v-for="(group, day) in groupedByDay" :key="day" class="space-y-3">
+        <!-- 목록 -->
+        <section v-else v-for="(group, day) in groupedByDay" :key="day" class="space-y-3">
           <div class="sticky top-0 z-10 -mx-4 bg-slate-950/75 px-4 py-2 backdrop-blur">
             <div class="flex items-center justify-between">
               <h2 class="text-sm font-semibold text-slate-200">{{ day }}</h2>
@@ -120,39 +152,58 @@
       </main>
 
       <footer class="mt-10 border-t border-slate-800 pt-6 text-xs text-slate-500">
-        데이터:
-        <code class="rounded bg-slate-900/60 px-2 py-1 text-slate-300">{"data":[...], "ok": true}</code>
+        API:
+        <code class="rounded bg-slate-900/60 px-2 py-1 text-slate-300">http://www.localhost:81/api/news</code>
       </footer>
     </div>
 
     <script type="module">
-      // Vue3 "방식" = createApp + setup(Composition API) 로 작성
-      const { createApp, ref, computed } = Vue;
+      const { createApp, ref, computed, onMounted } = Vue;
 
       createApp({
         setup() {
           const q = ref("");
-          const sortKey = ref("publishedAt"); // publishedAt | title | domain
-          const sortDir = ref("desc"); // desc | asc
+          const sortKey = ref("publishedAt");
+          const sortDir = ref("desc");
 
-          // 서버에서 받은 데이터 그대로 (여기만 교체)
-          const raw = ref({
-            data: [
-              {
-                title: "노트북이 350만 원?‥선 넘은 IT기기 가격, 'AI플레이션' 본격화 - v.daum.net",
-                link: "https://news.google.com/rss/articles/CBMiT0FVX3lxTE1rVUdwQ0c2UjRmTkNBTEJlOTBsRGVMdVVKMXE3ODRyVEJMQ2VWNFRaV0MzdVBCSG1oN2xUTFljbk5DT2ZTTnYzajlXODVBQm8?oc=5",
-                publishedAt: "Sat, 24 Jan 2026 11:28:11 GMT",
-              },
-              {
-                title: "\"아이 노트북 선물 어쩌죠?\"…메모리값 폭등에 IT 제품값도 덩달아 껑충 - 네이트",
-                link: "https://news.google.com/rss/articles/CBMiU0FVX3lxTE5vS01MTnNlcmxSelpZeUpPYnBINDJya3pfeGVQdjNIUXJUc2ZEVDctVWR2YnR5cURJRkZXOEdOcEhhNENzM3FSOXNOQkNuamRWM3dJ?oc=5",
-                publishedAt: "Fri, 23 Jan 2026 22:02:00 GMT",
-              },
-              // ... 나머지도 그대로 붙여넣기
-            ],
-            message: null,
-            ok: true,
-          });
+          const loading = ref(false);
+          const error = ref("");
+
+          // 서버 응답 원본
+          const raw = ref({ data: [], message: null, ok: true });
+
+          async function fetchNews() {
+            loading.value = true;
+            error.value = "";
+            try {
+              // https로 열려있으면 http 호출이 막힐 수 있음(혼합 콘텐츠)
+              // 그럴 땐 페이지도 http로 열거나, API도 https로 맞춰야 함
+              const res = await fetch("http://www.localhost/api/news", {
+                method: "GET",
+                headers: { Accept: "application/json" },
+                // 쿠키/세션이 필요하면 아래 주석 해제
+                // credentials: "include",
+              });
+
+              if (!res.ok) {
+                throw new Error(`HTTP ${res.status} ${res.statusText}`);
+              }
+
+              const json = await res.json();
+
+              // 기대 형태: { data: [...], ok: true, message: null }
+              if (!json || !Array.isArray(json.data)) {
+                throw new Error("응답 형식이 올바르지 않습니다. (data 배열 없음)");
+              }
+
+              raw.value = json;
+            } catch (e) {
+              error.value = e?.message ? `뉴스 로드 실패: ${e.message}` : "뉴스 로드 실패";
+              raw.value = { data: [], message: null, ok: false };
+            } finally {
+              loading.value = false;
+            }
+          }
 
           function extractDomain(url) {
             try {
@@ -193,14 +244,13 @@
           function dayLabelKST(publishedAt) {
             const d = parseDate(publishedAt);
             if (!d) return "날짜 알 수 없음";
-            const ymd = new Intl.DateTimeFormat("ko-KR", {
+            return new Intl.DateTimeFormat("ko-KR", {
               timeZone: "Asia/Seoul",
               year: "numeric",
               month: "2-digit",
               day: "2-digit",
               weekday: "short",
             }).format(d);
-            return ymd;
           }
 
           const items = computed(() => {
@@ -210,10 +260,7 @@
                 const link = String(x?.link ?? "");
                 const title = String(x?.title ?? "");
                 const publishedAt = String(x?.publishedAt ?? "");
-                const domain =
-                  extractDomain(link) ||
-                  extractDomainFromTitle(title) ||
-                  "-";
+                const domain = extractDomain(link) || extractDomainFromTitle(title) || "-";
                 return { title, link, publishedAt, domain };
               })
               .filter((x) => x.title && x.link);
@@ -227,15 +274,8 @@
               const db = parseDate(b.publishedAt)?.getTime() ?? 0;
               return (da - db) * dir;
             }
-
-            if (sortKey.value === "title") {
-              return a.title.localeCompare(b.title, "ko") * dir;
-            }
-
-            if (sortKey.value === "domain") {
-              return a.domain.localeCompare(b.domain, "ko") * dir;
-            }
-
+            if (sortKey.value === "title") return a.title.localeCompare(b.title, "ko") * dir;
+            if (sortKey.value === "domain") return a.domain.localeCompare(b.domain, "ko") * dir;
             return 0;
           }
 
@@ -244,12 +284,9 @@
             let list = items.value;
 
             if (keyword) {
-              list = list.filter((x) => {
-                return (
-                  x.title.toLowerCase().includes(keyword) ||
-                  x.domain.toLowerCase().includes(keyword)
-                );
-              });
+              list = list.filter((x) =>
+                x.title.toLowerCase().includes(keyword) || x.domain.toLowerCase().includes(keyword)
+              );
             }
 
             return [...list].sort(compareByKey);
@@ -262,10 +299,13 @@
               if (!map.has(day)) map.set(day, []);
               map.get(day).push(item);
             }
-            // Vue 템플릿에서 v-for로 돌리기 쉽게 plain object로 변환
             const obj = {};
             for (const [k, v] of map.entries()) obj[k] = v;
             return obj;
+          });
+
+          onMounted(() => {
+            fetchNews();
           });
 
           return {
@@ -276,6 +316,9 @@
             filteredItems,
             groupedByDay,
             formatKST,
+            loading,
+            error,
+            fetchNews,
           };
         },
       }).mount("#app");
