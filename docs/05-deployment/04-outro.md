@@ -52,7 +52,7 @@ scp ubuntu24:~/projects/koreanit-PBL/web-app.zip .
 
 ## 4. 제출 파일 기준
 
-* 제출 파일명: `이름.zip`
+* 제출 파일명: `web-app.zip` -> `이름.zip` 변경
 * 압축 해제 시 **프로젝트 루트 구조가 유지되어야 함**
 * 소스코드 누락 시 산출물 미인정
 

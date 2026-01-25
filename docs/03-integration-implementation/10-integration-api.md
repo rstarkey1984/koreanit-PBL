@@ -124,4 +124,4 @@ http://localhost:9092/api/news
 
 ## 다음 단계
 
-→ [**애플리케이션 테스트 (기본 호출)**](/docs/04-testing/01-api-test.md)
+→ [**에러 Exception 처리 구조**](11-error_handling.md)
